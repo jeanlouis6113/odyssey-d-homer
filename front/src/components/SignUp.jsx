@@ -8,9 +8,11 @@ class SignUp extends React.Component {
             name: "",
             lastname: "",
             password: "",
-            passwordbis: ""
+            passwordbis: "",
+            flash: ""
         };
     }
+
 
 
     updateEmailField = event => {
@@ -30,8 +32,24 @@ class SignUp extends React.Component {
     }
 
     handleSubmit = event => {
-        event.preventDefault();
+        const { email, password, name, lastname } = this.state;
+        event.preventDefault()
         console.log(this.state);
+
+
+        fetch("/auth/signup",
+            {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify({ email, password, name, lastname }),
+            })
+            .then(res => res.json())
+            .then(
+                res => this.setState({ "flash": res.flash }),
+                err => this.setState({ "flash": err.flash })
+            );
     }
 
 
@@ -55,7 +73,7 @@ class SignUp extends React.Component {
                     <input className="button" type="password" name="password" onChange={updatePasswordField} />
                     <label htmlFor="Passwordbis">Passwordbis:</label>
                     <input className="button" type="password" name="passwordbis" onChange={updatePasswordbisField} />
-                    <input className="buttonSubmit"type="submit" value="Soumettre" />
+                    <input className="buttonSubmit" type="submit" value="Soumettre" />
                 </form>
             </div>
         );
