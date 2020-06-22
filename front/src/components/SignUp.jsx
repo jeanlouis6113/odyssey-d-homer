@@ -4,7 +4,11 @@ class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: ""
+            email: "",
+            name: "",
+            lastname: "",
+            password: "",
+            passwordbis: ""
         };
     }
 
@@ -12,19 +16,48 @@ class SignUp extends React.Component {
     updateEmailField = event => {
         this.setState({ email: event.target.value });
     }
+    updateNameField = event => {
+        this.setState({ name: event.target.value });
+    }
+    updateLastnameField = event => {
+        this.setState({ lastname: event.target.value });
+    }
+    updatePasswordField = event => {
+        this.setState({ password: event.target.value });
+    }
+    updatePasswordbisField = event => {
+        this.setState({ passwordbis: event.target.value });
+    }
 
+    handleSubmit = event => {
+        event.preventDefault();
+        console.log(this.state);
+    }
 
 
     render() {
-        const {email} = this.state;
-        const {updateEmailField } = this;
+        const { updateEmailField } = this;
+        const { updateNameField } = this;
+        const { updateLastnameField } = this;
+        const { updatePasswordField } = this;
+        const { updatePasswordbisField } = this;
         return (
-            <>
-                <h1>{email}</h1>
-                <form>
-                    <input type="email" name="email" onChange={updateEmailField} />
+            <div className="form">
+                <h1>{JSON.stringify(this.state)}</h1>
+                <form onSubmit={this.handleSubmit} className="formulaire">
+                    <label htmlFor="email">Email:</label>
+                    <input className="button" type="email" name="email" onChange={updateEmailField} />
+                    <label htmlFor="name">Name:</label>
+                    <input className="button" type="text" name="name" onChange={updateNameField} />
+                    <label htmlFor="Lastname">Lastname:</label>
+                    <input className="button" type="text" name="lastname" onChange={updateLastnameField} />
+                    <label htmlFor="Password">password:</label>
+                    <input className="button" type="password" name="password" onChange={updatePasswordField} />
+                    <label htmlFor="Passwordbis">Passwordbis:</label>
+                    <input className="button" type="password" name="passwordbis" onChange={updatePasswordbisField} />
+                    <input className="buttonSubmit"type="submit" value="Soumettre" />
                 </form>
-            </>
+            </div>
         );
     }
 }

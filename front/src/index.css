@@ -1,0 +1,15 @@
+.formulaire {
+  display: flex;
+  flex-direction: column;
+}
+.button {
+    align-self: center;
+    width: 40%;
+}
+.buttonSubmit {
+    align-self: center;
+    width: 10%;
+}
+label{
+    text-align: center;
+}
