@@ -6,6 +6,13 @@ const morgan = require('morgan');
 const app = express();
 const authRouter = require('./routes/auth/auth')
 
+app.use(express.json());
+app.use(
+    express.urlencoded({
+        extended: true,
+    })
+);
+
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,6 +30,6 @@ app.use(function (req, res, next) {
 });
 
 
-let server = app.listen(process.env.PORT || 3000, function () {
+let server = app.listen(process.env.PORT || 5000, function () {
     console.log('Listening on port ' + server.address().port);
 });
