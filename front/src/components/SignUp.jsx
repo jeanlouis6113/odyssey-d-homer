@@ -3,6 +3,8 @@ import { TextField } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { Snackbar } from "@material-ui/core";
+import { Link } from 'react-router-dom';
+
 
 
 class SignUp extends React.Component {
@@ -78,6 +80,7 @@ class SignUp extends React.Component {
         return (
             <div className="form">
                 {/* <h1>{JSON.stringify(this.state)}</h1> */}
+                <Link to="/signin">Sign In</Link>
                 <form onSubmit={this.handleSubmit} className="formulaire">
                     <Grid container direction="column"
                         justify="center"
@@ -110,9 +113,11 @@ class SignUp extends React.Component {
                             name="lastname"
                             onChange={updateLastnameField} />
                         <Grid style={{ alignSelf: "flex-end", padding: 30 }} >
+                            <Link to="/">
                             <Button variant="contained" color="primary" type="submit">
                                 Submit
                         </Button>
+                        </Link>
                         </Grid>
                     </Grid>
                 </form>
