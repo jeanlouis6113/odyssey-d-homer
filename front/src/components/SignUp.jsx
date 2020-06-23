@@ -1,4 +1,9 @@
 import React from 'react';
+import { TextField } from '@material-ui/core';
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import { Snackbar } from "@material-ui/core";
+
 
 class SignUp extends React.Component {
     constructor(props) {
@@ -32,28 +37,39 @@ class SignUp extends React.Component {
     }
 
     handleSubmit = event => {
-        const { email, password, name, lastname } = this.state;
+        const { email, password, passwordbis, name, lastname } = this.state;
         event.preventDefault()
         console.log(this.state);
+        if (password === passwordbis) {
+
+            fetch("/auth/signup",
+                {
+                    method: 'POST',
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({ email, password, name, lastname }),
+                })
+                .then(res => res.json())
+                .then(
+                    res => this.setState({ flash: res.flash, isFlash: true }),
+                    err => this.setState({ flash: err.flash, isFlash: true })
+                );
+
+        }else {
+            this.setState({flash: "message: password it is not identique", isFlash: true})
+        }
 
 
-        fetch("/auth/signup",
-            {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json'
-                }),
-                body: JSON.stringify({ email, password, name, lastname }),
-            })
-            .then(res => res.json())
-            .then(
-                res => this.setState({ "flash": res.flash }),
-                err => this.setState({ "flash": err.flash })
-            );
     }
+    handleClose = () => {
+        this.setState({ isFlash: false });
+        this.state.flashIsOk && this.props.history.push("/");
+    };
 
 
     render() {
+        const { handleClose } = this;
         const { updateEmailField } = this;
         const { updateNameField } = this;
         const { updateLastnameField } = this;
@@ -61,20 +77,51 @@ class SignUp extends React.Component {
         const { updatePasswordbisField } = this;
         return (
             <div className="form">
-                <h1>{JSON.stringify(this.state)}</h1>
+                {/* <h1>{JSON.stringify(this.state)}</h1> */}
                 <form onSubmit={this.handleSubmit} className="formulaire">
-                    <label htmlFor="email">Email:</label>
-                    <input className="button" type="email" name="email" onChange={updateEmailField} />
-                    <label htmlFor="name">Name:</label>
-                    <input className="button" type="text" name="name" onChange={updateNameField} />
-                    <label htmlFor="Lastname">Lastname:</label>
-                    <input className="button" type="text" name="lastname" onChange={updateLastnameField} />
-                    <label htmlFor="Password">password:</label>
-                    <input className="button" type="password" name="password" onChange={updatePasswordField} />
-                    <label htmlFor="Passwordbis">Passwordbis:</label>
-                    <input className="button" type="password" name="passwordbis" onChange={updatePasswordbisField} />
-                    <input className="buttonSubmit" type="submit" value="Soumettre" />
+                    <Grid container direction="column"
+                        justify="center"
+                        alignItems="stretch"
+                        style={{ padding: 20 }} >
+                        <h2>Sign Up!</h2>
+                        <TextField
+                            label="Email"
+                            type="email"
+                            name="email"
+                            onChange={updateEmailField} />
+                        <TextField
+                            label="Password"
+                            type="password"
+                            name="password"
+                            onChange={updatePasswordField} />
+                        <TextField
+                            label="Password Copy"
+                            type="password"
+                            name="passwordbis"
+                            onChange={updatePasswordbisField} />
+                        <TextField
+                            label="Name"
+                            type="text"
+                            name="name"
+                            onChange={updateNameField} />
+                        <TextField
+                            label="Lastname"
+                            type="text"
+                            name="lastname"
+                            onChange={updateLastnameField} />
+                        <Grid style={{ alignSelf: "flex-end", padding: 30 }} >
+                            <Button variant="contained" color="primary" type="submit">
+                                Submit
+                        </Button>
+                        </Grid>
+                    </Grid>
                 </form>
+                <Snackbar
+                    open={this.state.isFlash}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    message={this.state.flash}>
+                </Snackbar>
             </div>
         );
     }

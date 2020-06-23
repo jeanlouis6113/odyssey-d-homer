@@ -1,15 +1,17 @@
-.formulaire {
-  display: flex;
-  flex-direction: column;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  height: 100%;
+  width: 100%;
 }
-.button {
-    align-self: center;
-    width: 40%;
+#root {
+  min-height: 100%;
+  background-color: #fcb571;
 }
-.buttonSubmit {
-    align-self: center;
-    width: 10%;
-}
-label{
-    text-align: center;
+@media screen and (min-width: 640px) {
+  #root {
+    height: 100%;
+  }
 }
