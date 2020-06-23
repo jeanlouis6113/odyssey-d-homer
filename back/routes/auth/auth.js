@@ -13,16 +13,7 @@ router.post("/signup", function (req, res, next) {
     });
 });
 
-router.get("/signup", function (req, res, next) {
-    connection.query('SELECT * from users', (err, results) => {
 
-        if (err) {
-            res.status(500).send('Erreur lors de la récupération du contenu');
-        } else {
-            res.json(results);
-        }
-    });
-});
 
 module.exports = router;
 
