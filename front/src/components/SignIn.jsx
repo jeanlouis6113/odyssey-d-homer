@@ -9,39 +9,34 @@ class SignIn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            profile: {
-                email: "",
-                password: ""
-            }
+            email: "",
+            password: ""
         }
+
     }
-    LastnameField = event => {
-        this.setState({ lastname: event.target.value });
+    EmailField = event => {
+        this.setState({ email: event.target.value });
     }
     PasswordField = event => {
         this.setState({ password: event.target.value });
     }
-
-    handleSubmit = event => {
+    handleSubmit(e) {
         const { email, password } = this.state;
-        event.preventDefault()
-        console.log(this.state);
-
-        fetch("/auth/signup",
-            {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json'
-                }),
-                body: JSON.stringify({ email, password }),
-            })
-            .then(res => res.json())
+        e.preventDefault();
+        this.setState({ isFlash: true });
+        fetch("/auth/signin", {
+            method: "POST",
+            headers: new Headers({
+                "Content-Type": "application/json",
+            }),
+            body: JSON.stringify({ email, password }),
+        })
+            .then((res) => res.json())
             .then(
-                res => this.setState({ flash: res.flash, isFlash: true }),
-                err => this.setState({ flash: err.flash, isFlash: true })
+                (res) => this.setState({ flash: res.flash }),
+                (err) => this.setState({ flash: err.flash })
             );
     }
-
 
     render() {
         const { EmailField } = this;
@@ -60,22 +55,24 @@ class SignIn extends React.Component {
                             label="Email"
                             type="email"
                             name="email"
-                            onChange={EmailField} />
+                            onChange={EmailField}
+                            required />
                         <TextField
                             label="Password"
                             type="password"
                             name="password"
-                            onChange={PasswordField} />
+                            onChange={PasswordField}
+                            required />
                         <Grid style={{ alignSelf: "flex-end", padding: 30 }} >
-                        <Link to="/profile">
-                            <Button variant="contained" color="primary" type="submit">
-                                Submit
+                            <Link to="/profile">
+                                <Button variant="contained" color="primary" type="submit" >
+                                    Submit
                         </Button>
-                        </Link>
+                            </Link>
                         </Grid>
                     </Grid>
                 </form>
-            </div>
+            </div >
         );
     }
 }

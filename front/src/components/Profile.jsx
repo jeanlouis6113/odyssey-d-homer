@@ -14,8 +14,8 @@ class Profile extends React.Component {
                 email: "homer.simpson@wildcodeschool.fr",
                 name: "Homer",
                 lastname: "Simpson"
-            }
-        }
+            },
+        };
     }
     handleClick = () => {
         this.props.history.push("/signin");
@@ -27,7 +27,7 @@ class Profile extends React.Component {
         return (
             <div>
                 <List>
-                    <ListItem>
+                    <ListItem component="nav">
                         <ListItemText primary="email" secondary={email} />
                         <ListItemText primary="name" secondary={name} />
                         <ListItemText primary="lastname" secondary={lastname} />

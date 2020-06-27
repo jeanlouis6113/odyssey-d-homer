@@ -1,4 +1,5 @@
 import React from 'react';
+import "./App.css";
 import SignUp from './components/SignUp';
 import Profile from './components/Profile';
 import SignIn from './components/SignIn';

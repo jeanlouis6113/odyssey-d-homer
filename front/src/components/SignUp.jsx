@@ -58,8 +58,8 @@ class SignUp extends React.Component {
                     err => this.setState({ flash: err.flash, isFlash: true })
                 );
 
-        }else {
-            this.setState({flash: "message: password it is not identique", isFlash: true})
+        } else {
+            this.setState({ flash: "message: password it is not identique", isFlash: true })
         }
 
 
@@ -68,7 +68,7 @@ class SignUp extends React.Component {
         this.setState({ isFlash: false });
         this.state.flashIsOk && this.props.history.push("/");
     };
-
+    
 
     render() {
         const { handleClose } = this;
@@ -91,33 +91,36 @@ class SignUp extends React.Component {
                             label="Email"
                             type="email"
                             name="email"
-                            onChange={updateEmailField} />
+                            onChange={updateEmailField}
+                            required />
                         <TextField
                             label="Password"
                             type="password"
                             name="password"
-                            onChange={updatePasswordField} />
+                            onChange={updatePasswordField} 
+                            required/>
                         <TextField
                             label="Password Copy"
                             type="password"
                             name="passwordbis"
-                            onChange={updatePasswordbisField} />
+                            onChange={updatePasswordbisField}
+                            required/>
                         <TextField
                             label="Name"
                             type="text"
                             name="name"
-                            onChange={updateNameField} />
+                            onChange={updateNameField} 
+                            required/>
                         <TextField
                             label="Lastname"
                             type="text"
                             name="lastname"
-                            onChange={updateLastnameField} />
+                            onChange={updateLastnameField} 
+                            reuqired />
                         <Grid style={{ alignSelf: "flex-end", padding: 30 }} >
-                            <Link to="/">
-                            <Button variant="contained" color="primary" type="submit">
+                            <Button onClick={event =>  window.location.href='/'} variant="contained" color="primary" type="submit">
                                 Submit
                         </Button>
-                        </Link>
                         </Grid>
                     </Grid>
                 </form>
