@@ -1,8 +1,10 @@
+
 import React from 'react';
-import { Link } from 'react-router-dom';
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import { TextField, Button } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
+import { Snackbar } from "@material-ui/core";
+import { Link, Redirect } from 'react-router-dom';
+
 
 
 class SignIn extends React.Component {
@@ -10,72 +12,98 @@ class SignIn extends React.Component {
         super(props);
         this.state = {
             email: "",
-            password: ""
-        }
-
+            password: "",
+            flash: "",
+            redirect: false
+        };
     }
+
+
+
     EmailField = event => {
         this.setState({ email: event.target.value });
     }
     PasswordField = event => {
         this.setState({ password: event.target.value });
     }
-    handleSubmit(e) {
-        const { email, password } = this.state;
-        e.preventDefault();
-        this.setState({ isFlash: true });
-        fetch("/auth/signin", {
-            method: "POST",
-            headers: new Headers({
-                "Content-Type": "application/json",
-            }),
-            body: JSON.stringify({ email, password }),
-        })
-            .then((res) => res.json())
+
+    handleSubmit = event => {
+        event.preventDefault()
+        console.log(this.state);
+
+        fetch("/auth/signin",
+            {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify(this.state),
+            })
+            .then(res => res.json())
             .then(
-                (res) => this.setState({ flash: res.flash }),
-                (err) => this.setState({ flash: err.flash })
+                res => this.setState({ flash: res.flash, isFlash: true, redirect: true }),
+                err => this.setState({ flash: err.flash, isFlash: true })
             );
+
     }
+
+
+
+    handleClose = () => {
+        this.setState({ isFlash: false });
+        this.state.flashIsOk && this.props.history.push("/");
+    };
+
 
     render() {
-        const { EmailField } = this;
-        const { PasswordField } = this;
-        const { handleSubmit } = this;
-        return (
-            <div>
-                <Link to="/signup">Sign Up</Link>
-                <form onSubmit={handleSubmit} className="formulaire">
-                    <Grid container direction="column"
-                        justify="center"
-                        alignItems="stretch"
-                        style={{ padding: 20 }} >
-                        <h2>Sign In!</h2>
-                        <TextField
-                            label="Email"
-                            type="email"
-                            name="email"
-                            onChange={EmailField}
-                            required />
-                        <TextField
-                            label="Password"
-                            type="password"
-                            name="password"
-                            onChange={PasswordField}
-                            required />
-                        <Grid style={{ alignSelf: "flex-end", padding: 30 }} >
-                            <Link to="/profile">
-                                <Button variant="contained" color="primary" type="submit" >
+        if (this.state.redirect) {
+            return <Redirect to="/profile" />
+        } else {
+            return (
+                <div className="form">
+                    {this.state.redirect && <Redirect to="/profile" />}
+                    <Link to="/signup">Sign Up</Link>
+                    <form onSubmit={this.handleSubmit} className="formulaire">
+                        <Grid container direction="column"
+                            justify="center"
+                            alignItems="stretch"
+                            style={{ padding: 20 }} >
+                            <h2>Sign Up!</h2>
+                            <TextField
+                                id="email"
+                                label="Email"
+                                type="email"
+                                name="email"
+                                value={this.state.email}
+                                onChange={this.EmailField}
+                                required />
+                            <TextField
+                                id="password"
+                                label="Password"
+                                type="password"
+                                name="password"
+                                value={this.state.password}
+                                onChange={this.PasswordField}
+                                required />
+                            <Grid style={{ alignSelf: "flex-end", padding: 30 }} >
+                                <Button
+                                    className="submitButton"
+                                    type="submit"
+                                    value="submit">
                                     Submit
-                        </Button>
-                            </Link>
+                            </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </form>
-            </div >
-        );
+                    </form>
+                    <Snackbar
+                        open={this.state.isFlash}
+                        autoHideDuration={2000}
+                        onClose={this.handleClose}
+                        message={this.state.flash}>
+                    </Snackbar>
+                </div>
+            );
+        }
     }
 }
-
-
 export default SignIn;

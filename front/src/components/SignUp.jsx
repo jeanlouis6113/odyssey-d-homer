@@ -1,9 +1,8 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import { Snackbar } from "@material-ui/core";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 
 
@@ -16,7 +15,8 @@ class SignUp extends React.Component {
             lastname: "",
             password: "",
             passwordbis: "",
-            flash: ""
+            flash: "",
+            redirect: false
         };
     }
 
@@ -54,7 +54,7 @@ class SignUp extends React.Component {
                 })
                 .then(res => res.json())
                 .then(
-                    res => this.setState({ flash: res.flash, isFlash: true }),
+                    res => this.setState({ flash: res.flash, isFlash: true, redirect: true }),
                     err => this.setState({ flash: err.flash, isFlash: true })
                 );
 
@@ -68,10 +68,10 @@ class SignUp extends React.Component {
         this.setState({ isFlash: false });
         this.state.flashIsOk && this.props.history.push("/");
     };
-    
+
 
     render() {
-        const { handleClose } = this;
+        const { handleClose, } = this;
         const { updateEmailField } = this;
         const { updateNameField } = this;
         const { updateLastnameField } = this;
@@ -79,7 +79,7 @@ class SignUp extends React.Component {
         const { updatePasswordbisField } = this;
         return (
             <div className="form">
-                {/* <h1>{JSON.stringify(this.state)}</h1> */}
+                {this.state.redirect && <Redirect to="/" />}
                 <Link to="/signin">Sign In</Link>
                 <form onSubmit={this.handleSubmit} className="formulaire">
                     <Grid container direction="column"
@@ -88,39 +88,52 @@ class SignUp extends React.Component {
                         style={{ padding: 20 }} >
                         <h2>Sign Up!</h2>
                         <TextField
+                            id="email"
                             label="Email"
                             type="email"
                             name="email"
+                            value={this.state.email}
                             onChange={updateEmailField}
                             required />
                         <TextField
+                            id="password"
                             label="Password"
                             type="password"
                             name="password"
-                            onChange={updatePasswordField} 
-                            required/>
+                            value={this.state.password}
+                            onChange={updatePasswordField}
+                            required />
                         <TextField
+                            id="passwordbis"
                             label="Password Copy"
                             type="password"
                             name="passwordbis"
+                            value={this.state.passwordbis}
                             onChange={updatePasswordbisField}
-                            required/>
+                            required />
                         <TextField
+                            id="name"
                             label="Name"
                             type="text"
                             name="name"
-                            onChange={updateNameField} 
-                            required/>
+                            onChange={updateNameField}
+                            value={this.state.name}
+                            required />
                         <TextField
+                            id="lastname"
                             label="Lastname"
                             type="text"
                             name="lastname"
-                            onChange={updateLastnameField} 
-                            reuqired />
+                            value={this.state.lastname}
+                            onChange={updateLastnameField}
+                            required />
                         <Grid style={{ alignSelf: "flex-end", padding: 30 }} >
-                            <Button onClick={event =>  window.location.href='/'} variant="contained" color="primary" type="submit">
+                            <Button
+                                className="submitButton"
+                                type="submit"
+                                value="submit">
                                 Submit
-                        </Button>
+                            </Button>
                         </Grid>
                     </Grid>
                 </form>
