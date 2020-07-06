@@ -1,8 +1,8 @@
 import React from 'react';
 import "./App.css";
-import SignUp from './components/SignUp';
-import Profile from './components/Profile';
-import SignIn from './components/SignIn';
+import SignUp from './containers/SignUp';
+import Profile from './containers/Profile';
+import SignIn from './containers/SignIn';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { Grid, Paper } from '@material-ui/core';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
